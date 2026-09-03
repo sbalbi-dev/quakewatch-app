@@ -1,0 +1,8 @@
+# Copiá este archivo como "local.properties" (sin .example) SOLO si compilás
+# de forma local. En GitHub Actions el workflow lo genera automáticamente,
+# así que no hace falta commitear local.properties (de hecho está en .gitignore).
+#
+# sdk.dir=/ruta/a/tu/Android/sdk
+# flutter.sdk=/ruta/a/tu/flutter
+# flutter.versionCode=1
+# flutter.versionName=1.0.0

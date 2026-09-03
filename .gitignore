@@ -1,0 +1,17 @@
+# Backend (Python)
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/quakewatch.db
+backend/quakewatch.db-*
+backend/firebase-service-account.json
+
+# Mobile (Flutter) — el .gitignore específico vive en mobile/.gitignore,
+# pero se repiten acá las rutas sensibles por las dudas.
+mobile/android/local.properties
+mobile/android/app/google-services.json
+mobile/build/
+mobile/.dart_tool/
+
+.DS_Store

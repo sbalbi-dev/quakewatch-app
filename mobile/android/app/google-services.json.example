@@ -1,0 +1,26 @@
+{
+  "_comment": "PLANTILLA. Reemplazá este archivo por el google-services.json real que descargás de tu proyecto de Firebase (Configuración del proyecto > Tus apps > Android, package name com.sebas.quakewatch). Guardalo como android/app/google-services.json (sin .example) y NO lo subas a git si el repo es público: usá el secret GOOGLE_SERVICES_JSON en GitHub Actions en su lugar (ver README).",
+  "project_info": {
+    "project_number": "000000000000",
+    "project_id": "quakewatch-xxxxx",
+    "storage_bucket": "quakewatch-xxxxx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "android_client_info": {
+          "package_name": "com.sebas.quakewatch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        { "current_key": "REEMPLAZAR" }
+      ],
+      "services": {
+        "appinvite_service": { "other_platform_oauth_client": [] }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
