@@ -1,0 +1,79 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/android-build.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Build APK (release, firmado con la key de debug)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Configurar Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Preparar google-services.json
+        run: |
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" ]; then
+            echo "Usando google-services.json real desde el secret."
+            echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
+          else
+            echo "No hay secret GOOGLE_SERVICES_JSON_BASE64 todavía: usando la plantilla de ejemplo."
+            cp android/app/google-services.json.example android/app/google-services.json
+          fi
+
+      - name: flutter pub get
+        run: flutter pub get
+
+      - name: flutter analyze (informativo, no bloquea el build)
+        run: flutter analyze || true
+
+      - name: flutter build apk --release
+        run: flutter build apk --release
+
+      - name: Subir APK como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quakewatch-release-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
+
+  release:
+    name: Publicar release en GitHub (solo con tags v*)
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar APK del job anterior
+        uses: actions/download-artifact@v4
+        with:
+          name: quakewatch-release-apk
+          path: dist
+
+      - name: Crear release y adjuntar el APK
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/app-release.apk
