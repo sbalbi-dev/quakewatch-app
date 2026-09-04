@@ -10,6 +10,7 @@ import '../services/location_service.dart';
 import '../services/notification_service.dart';
 import '../services/settings_service.dart';
 import '../widgets/earthquake_tile.dart';
+import 'earthquake_detail_screen.dart';
 
 class NearbyScreen extends StatefulWidget {
   const NearbyScreen({super.key});
@@ -154,7 +155,15 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           ? eq.distanceKmFrom(
                               _position!.latitude, _position!.longitude)
                           : null;
-                      return EarthquakeTile(earthquake: eq, distanceKm: distance);
+                      return EarthquakeTile(
+                        earthquake: eq,
+                        distanceKm: distance,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => EarthquakeDetailScreen(earthquake: eq),
+                          ),
+                        ),
+                      );
                     },
                   ),
           ),

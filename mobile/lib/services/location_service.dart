@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
 
 class LocationUnavailableException implements Exception {
@@ -34,11 +36,32 @@ class LocationService {
       );
     }
 
-    return Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.medium,
-      ),
-    );
+    try {
+      // Sin timeLimit, getCurrentPosition() puede quedar esperando para
+      // siempre si el dispositivo no logra un fix de GPS (típico en
+      // interiores) — eso es lo que hacía que la pantalla se quede
+      // "pensando" sin fin. Con el límite, si no hay fix a tiempo pasamos
+      // a los fallbacks de abajo en vez de trabarnos.
+      return await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.medium,
+          timeLimit: Duration(seconds: 12),
+        ),
+      );
+    } on TimeoutException {
+      final lastKnown = await Geolocator.getLastKnownPosition();
+      if (lastKnown != null) return lastKnown;
+      throw LocationUnavailableException(
+        'No se pudo obtener tu ubicación (sin señal de GPS). Probá salir '
+        'a un lugar más despejado o reintentar en unos segundos.',
+      );
+    } catch (e) {
+      final lastKnown = await Geolocator.getLastKnownPosition();
+      if (lastKnown != null) return lastKnown;
+      throw LocationUnavailableException(
+        'No se pudo obtener tu ubicación: $e',
+      );
+    }
   }
 
   /// Pide solo el permiso, sin bloquear si el usuario lo rechaza (usado al

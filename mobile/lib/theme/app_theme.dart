@@ -44,4 +44,20 @@ class AppTheme {
         return const Color(0xFFD32F2F);
     }
   }
+
+  /// Etiqueta en español para mostrar junto a la magnitud, a modo de
+  /// "intensidad" percibida en criollo (no es la escala de Mercalli real,
+  /// que necesitaría datos que USGS/EMSC no exponen de forma consistente).
+  static String severityLabel(EarthquakeSeverity severity) {
+    switch (severity) {
+      case EarthquakeSeverity.minor:
+        return 'Leve';
+      case EarthquakeSeverity.moderate:
+        return 'Moderado';
+      case EarthquakeSeverity.strong:
+        return 'Fuerte';
+      case EarthquakeSeverity.severe:
+        return 'Severo';
+    }
+  }
 }

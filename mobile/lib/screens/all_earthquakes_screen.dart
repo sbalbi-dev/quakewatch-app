@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/earthquake.dart';
 import '../services/earthquake_service.dart';
 import '../widgets/earthquake_tile.dart';
+import 'earthquake_detail_screen.dart';
 
 class AllEarthquakesScreen extends StatefulWidget {
   const AllEarthquakesScreen({super.key});
@@ -136,8 +137,15 @@ class _AllEarthquakesScreenState extends State<AllEarthquakesScreen> {
       child: ListView.separated(
         itemCount: _earthquakes.length,
         separatorBuilder: (_, __) => const Divider(height: 1),
-        itemBuilder: (context, index) =>
-            EarthquakeTile(earthquake: _earthquakes[index]),
+        itemBuilder: (context, index) => EarthquakeTile(
+          earthquake: _earthquakes[index],
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) =>
+                  EarthquakeDetailScreen(earthquake: _earthquakes[index]),
+            ),
+          ),
+        ),
       ),
     );
   }

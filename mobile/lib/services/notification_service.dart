@@ -46,7 +46,7 @@ class NotificationService {
 
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const initSettings = InitializationSettings(android: androidInit);
-        await _localNotifications.initialize(settings: initSettings);
+    await _localNotifications.initialize(settings: initSettings);
     await _localNotifications
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -69,7 +69,7 @@ class NotificationService {
   void _showForegroundNotification(RemoteMessage message) {
     final notification = message.notification;
     if (notification == null) return;
-        _localNotifications.show(
+    _localNotifications.show(
       id: notification.hashCode,
       title: notification.title,
       body: notification.body,
