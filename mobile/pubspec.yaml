@@ -39,7 +39,7 @@ dependencies:
   latlong2: ^0.10.1
 
   # Reverse geocoding (lat/lon -> país/ciudad) para la pantalla de detalle
-  geocoding: ^5.0.0
+  geocoding: ^4.0.0
 
 dev_dependencies:
   flutter_test:
