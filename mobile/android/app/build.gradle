@@ -18,12 +18,18 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "
 
 android {
     namespace "com.sebas.quakewatch"
-    compileSdk flutter.compileSdkVersion
+    // Hardcodeado en 37 (en vez de flutter.compileSdkVersion, que hoy da 36)
+    // porque permission_handler_android pide compilar contra SDK 37 o
+    // superior. Es seguro subirlo: compileSdk es retrocompatible.
+    compileSdk 37
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        // flutter_local_notifications requiere Java 8+ APIs desugarizadas
+        // para poder compilar contra versiones viejas de Android.
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
@@ -59,4 +65,5 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.7.0')
     implementation "androidx.multidex:multidex:2.0.1"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
 }
